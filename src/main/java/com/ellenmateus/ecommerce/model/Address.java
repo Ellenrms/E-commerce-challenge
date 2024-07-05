@@ -1,40 +1,42 @@
 package com.ellenmateus.ecommerce.model;
 
+
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
 @Data
-public class Product {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
-    private String name;
+    @NotBlank(message = "Street is mandatory")
+    private String street;
 
-    @NotNull(message = "Price is mandatory")
-    @Min(value = 0, message = "Price must be positive")
-    private Double price;
+    @NotBlank(message = "City is mandatory")
+    private String city;
 
-    @NotNull(message = "Stock is mandatory")
-    @Min(value = 0, message = "Stock must be positive")
-    private Integer stock;
+    @NotBlank(message = "State is mandatory")
+    private String state;
 
-    private Boolean active;
+    @NotBlank(message = "Postal code is mandatory")
+    private String postalCode;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    private User user;
 
     @PrePersist
     protected void onCreate() {
