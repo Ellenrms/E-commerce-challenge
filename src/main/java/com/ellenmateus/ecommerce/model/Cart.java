@@ -1,16 +1,9 @@
 package com.ellenmateus.ecommerce.model;
 
-
+import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.Data;
 
 @Entity
 @Data
@@ -20,6 +13,7 @@ public class Cart {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "cart")
