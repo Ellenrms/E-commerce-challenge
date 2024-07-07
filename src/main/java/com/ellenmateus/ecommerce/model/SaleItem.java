@@ -8,7 +8,7 @@ import lombok.Data;
 public class SaleItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "sale_id", nullable = false)

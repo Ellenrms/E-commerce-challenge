@@ -13,7 +13,7 @@ import lombok.Data;
 public class ExceptionLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String message;
     private String stackTrace;
