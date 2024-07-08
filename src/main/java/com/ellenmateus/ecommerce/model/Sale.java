@@ -9,7 +9,9 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "sale")
 public class Sale {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

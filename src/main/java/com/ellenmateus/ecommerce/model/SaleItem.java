@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "sale_item")
 public class SaleItem {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
