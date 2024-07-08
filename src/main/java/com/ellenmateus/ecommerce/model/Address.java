@@ -3,6 +3,9 @@ package com.ellenmateus.ecommerce.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,16 +21,19 @@ import lombok.Data;
 @Data
 @Table(name = "address")
 public class Address {
+	
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
+    
+    
     private String street;
     private String city;
     private String state;
     private String postalCode;
-    private LocalDateTime creationDate;
-    private LocalDateTime dateUpdate;
+    
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -35,4 +41,10 @@ public class Address {
 
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sales;
+    
+    @CreationTimestamp
+    private LocalDateTime creationDate;
+
+    @UpdateTimestamp
+    private LocalDateTime dateUpdate;
 }

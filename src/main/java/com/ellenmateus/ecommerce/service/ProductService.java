@@ -12,24 +12,43 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+	 @Autowired
+	    private ProductRepository productRepository;
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
+	    public List<Product> findAll() {
+	        return productRepository.findAll();
+	    }
 
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
-    }
+	    public Optional<Product> findById(Long id) {
+	        return productRepository.findById(id);
+	    }
 
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
-    }
+	    public Product save(Product product) {
+	        return productRepository.save(product);
+	    }
 
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
-    }
+	    public void deleteById(Long id) {
+	        productRepository.deleteById(id);
+	    }
 
+	    public void deactivateProduct(Long id) {
+	        Optional<Product> product = findById(id);
+	        if (product.isPresent()) {
+	            Product updatedProduct = product.get();
+	            updatedProduct.setActive(false);
+	            save(updatedProduct);
+	        }
+	    }
 
-}
+	    public boolean canDeleteProduct(Long productId) {
+	        // Verificar se o produto está incluído em alguma venda.
+	        // Retornar falso se o produto estiver incluído em alguma venda.
+	    	
+	        return true; // Atualizar conforme a lógica específica.
+	    }
+
+	    public boolean isStockAvailable(Long productId, Integer quantity) {
+	        Optional<Product> product = findById(productId);
+	        return product.isPresent() && product.get().getStock() >= quantity;
+	    }
+	}
