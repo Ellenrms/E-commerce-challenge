@@ -1,7 +1,5 @@
 package com.ellenmateus.ecommerce.service;
 
-
-
 import com.ellenmateus.ecommerce.model.Address;
 import com.ellenmateus.ecommerce.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +14,19 @@ public class AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public List<Address> getAllAddresses() {
+    public List<Address> findAll() {
         return addressRepository.findAll();
     }
 
-    public Optional<Address> getAddressById(Long id) {
+    public Optional<Address> findById(Long id) {
         return addressRepository.findById(id);
     }
 
-    public Address createAddress(Address address) {
+    public Address save(Address address) {
         return addressRepository.save(address);
     }
 
-    public void deleteAddress(Long id) {
+    public void deleteById(Long id) {
         addressRepository.deleteById(id);
     }
-
-   
 }
