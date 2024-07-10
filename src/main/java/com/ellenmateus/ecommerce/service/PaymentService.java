@@ -19,7 +19,7 @@ public class PaymentService {
         return paymentRepository.findAll();
     }
 
-    public Optional<Payment> getPaymentById(Long id) {
+    public Optional<Payment> getPaymentById(Integer id) {
         return paymentRepository.findById(id);
     }
 
@@ -27,7 +27,7 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
-    public void deletePayment(Long id) {
+    public void deletePayment(Integer id) {
         paymentRepository.deleteById(id);
     }
 

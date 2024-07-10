@@ -26,16 +26,16 @@ public class SaleService {
         return saleRepository.findAll();
     }
 
-    public Optional<Sale> findById(Long id) {
+    public Optional<Sale> findById(Integer id) {
         return saleRepository.findById(id);
     }
 
-    public Sale findSaleById(Long id) {
+    public Sale findSaleById(Integer id) {
         return saleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Sale not found with ID: " + id));
     }
 
-    public Sale updateSale(Long id, Sale updatedSale) {
+    public Sale updateSale(Integer id, Sale updatedSale) {
         Sale sale = findSaleById(id);
 
         sale.setSaleDate(updatedSale.getSaleDate());
@@ -47,7 +47,7 @@ public class SaleService {
         return saleRepository.save(sale);
     }
 
-    public void deleteSale(Long id) {
+    public void deleteSale(Integer id) {
         Sale sale = findSaleById(id);
         saleRepository.delete(sale);
     }
@@ -69,7 +69,7 @@ public class SaleService {
         return saleRepository.findBySaleDateBetween(startOfWeek, endOfWeek);
     }
 
-    public boolean isProductInAnySale(Long productId) {
+    public boolean isProductInAnySale(Integer productId) {
         List<Sale> sales = saleRepository.findAll();
         for (Sale sale : sales) {
             for (Product product : sale.getItems().stream().map(item -> item.getProduct()).toList()) {

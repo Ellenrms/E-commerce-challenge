@@ -18,7 +18,7 @@ public class ExceptionLogService {
         return exceptionLogRepository.findAll();
     }
 
-    public Optional<ExceptionLog> getExceptionLogById(Long id) {
+    public Optional<ExceptionLog> getExceptionLogById(Integer id) {
         return exceptionLogRepository.findById(id);
     }
 
@@ -26,7 +26,7 @@ public class ExceptionLogService {
         return exceptionLogRepository.save(exceptionLog);
     }
 
-    public void deleteExceptionLog(Long id) {
+    public void deleteExceptionLog(Integer id) {
         exceptionLogRepository.deleteById(id);
     }
 

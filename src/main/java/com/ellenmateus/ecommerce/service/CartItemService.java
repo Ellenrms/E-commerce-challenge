@@ -19,7 +19,7 @@ public class CartItemService {
         return cartItemRepository.findAll();
     }
 
-    public Optional<CartItem> getCartItemById(Long id) {
+    public Optional<CartItem> getCartItemById(Integer id) {
         return cartItemRepository.findById(id);
     }
 
@@ -27,7 +27,7 @@ public class CartItemService {
         return cartItemRepository.save(cartItem);
     }
 
-    public void deleteCartItem(Long id) {
+    public void deleteCartItem(Integer id) {
         cartItemRepository.deleteById(id);
     }
 

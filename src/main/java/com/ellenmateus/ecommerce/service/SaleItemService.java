@@ -19,7 +19,7 @@ public class SaleItemService {
         return saleItemRepository.findAll();
     }
 
-    public Optional<SaleItem> getSaleItemById(Long id) {
+    public Optional<SaleItem> getSaleItemById(Integer id) {
         return saleItemRepository.findById(id);
     }
 
@@ -27,7 +27,7 @@ public class SaleItemService {
         return saleItemRepository.save(saleItem);
     }
 
-    public void deleteSaleItem(Long id) {
+    public void deleteSaleItem(Integer id) {
         saleItemRepository.deleteById(id);
     }
 

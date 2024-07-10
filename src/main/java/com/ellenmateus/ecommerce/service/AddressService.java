@@ -18,7 +18,7 @@ public class AddressService {
         return addressRepository.findAll();
     }
 
-    public Optional<Address> findById(Long id) {
+    public Optional<Address> findById(Integer id) {
         return addressRepository.findById(id);
     }
 
@@ -26,7 +26,7 @@ public class AddressService {
         return addressRepository.save(address);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         addressRepository.deleteById(id);
     }
 }
