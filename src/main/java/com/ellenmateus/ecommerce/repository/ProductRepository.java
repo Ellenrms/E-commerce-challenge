@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.ellenmateus.ecommerce.model.Product;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Integer> {
 	
 	
 	@Query("SELECT COUNT(si) > 0 FROM SaleItem si WHERE si.product.id = :productId")
-    boolean isProductInAnySale(@Param("productId") Long productId);
+    boolean isProductInAnySale(@Param("productId") Integer productId);
 }

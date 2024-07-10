@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.ellenmateus.ecommerce.model.Sale;
 
 @Repository
-public interface SaleRepository extends JpaRepository<Sale, Long> {
+public interface SaleRepository extends JpaRepository<Sale, Integer> {
     List<Sale> findBySaleDateBetween(LocalDateTime startDate, LocalDateTime endDate);
-    boolean existsByItems_ProductId(Long productId);
+    boolean existsByItems_ProductId(Integer productId);
 }	
