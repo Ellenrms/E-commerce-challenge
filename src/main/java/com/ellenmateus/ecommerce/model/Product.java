@@ -18,16 +18,20 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "product")
 public class Product {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotBlank(message = "Product name is required")
     private String name;
@@ -42,7 +46,7 @@ public class Product {
     
     @NotNull(message = "Quantity in stock is mandatory")
     @Min(value = 0, message = "Stock must be positive")
-    private Long stock;
+    private Integer stock;
     
     
     private Boolean active = true;

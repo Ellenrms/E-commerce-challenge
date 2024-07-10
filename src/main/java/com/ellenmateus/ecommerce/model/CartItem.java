@@ -35,7 +35,7 @@ public class CartItem {
 
     @NotNull(message = "Quantity is mandatory")
     @Min(value = 1, message = "Quantity must be at least 1")
-    private Long quantity;
+    private Integer quantity;
     
     @CreationTimestamp
     private LocalDateTime creationDate;

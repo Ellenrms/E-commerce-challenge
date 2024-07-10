@@ -34,7 +34,7 @@ public class Sale {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @OneToOne //mudei de ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 

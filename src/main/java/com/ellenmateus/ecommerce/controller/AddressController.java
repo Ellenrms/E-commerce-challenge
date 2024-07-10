@@ -56,10 +56,7 @@ public class AddressController {
         Optional<Address> address = addressService.findById(id);
         if (address.isPresent()) {
             Address updatedAddress = address.get();
-            updatedAddress.setStreet(addressDetails.getStreet());
             updatedAddress.setCity(addressDetails.getCity());
-            updatedAddress.setState(addressDetails.getState());
-            updatedAddress.setPostalCode(addressDetails.getPostalCode());
             updatedAddress = addressService.save(updatedAddress);
             return ResponseEntity.ok(updatedAddress);
         } else {
