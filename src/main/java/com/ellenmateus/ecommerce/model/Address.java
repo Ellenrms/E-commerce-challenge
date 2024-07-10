@@ -25,7 +25,7 @@ public class Address {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     
     
@@ -39,8 +39,7 @@ public class Address {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Sale> sales;
+    
     
     @CreationTimestamp
     private LocalDateTime creationDate;
