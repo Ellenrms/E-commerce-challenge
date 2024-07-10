@@ -35,7 +35,7 @@ public class SaleItemController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find a sale item by ID")
-    public ResponseEntity<SaleItem> getSaleItemById(@PathVariable Long id) {
+    public ResponseEntity<SaleItem> getSaleItemById(@PathVariable Integer id) {
         Optional<SaleItem> saleItem = saleItemService.getSaleItemById(id);
         if (saleItem.isPresent()) {
             return ResponseEntity.ok(saleItem.get());
@@ -52,7 +52,7 @@ public class SaleItemController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a sale item by ID")
-    public ResponseEntity<Void> deleteSaleItem(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteSaleItem(@PathVariable Integer id) {
         Optional<SaleItem> saleItem = saleItemService.getSaleItemById(id);
         if (saleItem.isPresent()) {
             saleItemService.deleteSaleItem(id);

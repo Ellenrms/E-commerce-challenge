@@ -3,6 +3,7 @@ package com.ellenmateus.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ellenmateus.ecommerce.dto.DTOProduct;
 import com.ellenmateus.ecommerce.model.Product;
 import com.ellenmateus.ecommerce.service.ProductService;
 
@@ -26,39 +28,43 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-
-    @Operation(summary = "List all products")
+    
+    @Operation(summary = "Search all products")
+    @Cacheable("products")
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<DTOProduct> findAll() {
         return productService.findAll();
-    }
 
+    }
+    
+        
     @Operation(summary = "Search for a product by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
+    public ResponseEntity<Product> getProductById(@PathVariable Integer id) {
+        Product product = productService.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
         return ResponseEntity.ok(product);
     }
 
     
     @Operation(summary = "Add a new product")
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.save(product);
+    public ResponseEntity<DTOProduct> createProduct(@RequestBody DTOProduct dtoProduct) {
+        DTOProduct savedProduct = productService.save(dtoProduct);
+        return ResponseEntity.ok(savedProduct);
     }
 
+    
     @Operation(summary = "Update an existing product")
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-        Product product = productService.updateProduct(id, updatedProduct);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<DTOProduct> updateProduct(@PathVariable Integer id, @RequestBody DTOProduct dtoProduct) {
+        DTOProduct updatedProduct = productService.updateProduct(id, dtoProduct);
+        return ResponseEntity.ok(updatedProduct);
     }
     
     
     @Operation(summary = "Delete a product")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
         if (productService.isProductInAnySale(id)) {
             productService.deactivateProduct(id);
             return ResponseEntity.ok().build();
@@ -71,7 +77,7 @@ public class ProductController {
         
         @Operation(summary = "Deactivate a product")
         @PutMapping("/{id}/deactivate")
-        public ResponseEntity<Void> deactivateProduct(@PathVariable Long id) {
+        public ResponseEntity<Void> deactivateProduct(@PathVariable Integer id) {
             productService.deactivateProduct(id);
             return ResponseEntity.noContent().build();
         }

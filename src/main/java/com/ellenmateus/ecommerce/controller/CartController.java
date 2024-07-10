@@ -35,7 +35,7 @@ public class CartController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a cart by ID")
-    public ResponseEntity<Cart> getCartById(@PathVariable Long id) {
+    public ResponseEntity<Cart> getCartById(@PathVariable Integer id) {
         Optional<Cart> cart = cartService.getCartById(id);
         if (cart.isPresent()) {
             return ResponseEntity.ok(cart.get());
@@ -52,7 +52,7 @@ public class CartController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a cart by ID")
-    public ResponseEntity<Void> deleteCart(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCart(@PathVariable Integer id) {
         Optional<Cart> cart = cartService.getCartById(id);
         if (cart.isPresent()) {
             cartService.deleteCart(id);

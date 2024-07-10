@@ -35,7 +35,7 @@ public class PaymentController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a payment by ID")
-    public ResponseEntity<Payment> getPaymentById(@PathVariable Long id) {
+    public ResponseEntity<Payment> getPaymentById(@PathVariable Integer id) {
         Optional<Payment> payment = paymentService.getPaymentById(id);
         if (payment.isPresent()) {
             return ResponseEntity.ok(payment.get());
@@ -52,7 +52,7 @@ public class PaymentController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a payment by ID")
-    public ResponseEntity<Void> deletePayment(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePayment(@PathVariable Integer id) {
         Optional<Payment> payment = paymentService.getPaymentById(id);
         if (payment.isPresent()) {
             paymentService.deletePayment(id);

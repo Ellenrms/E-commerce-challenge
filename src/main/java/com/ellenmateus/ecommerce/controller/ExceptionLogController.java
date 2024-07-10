@@ -36,7 +36,7 @@ public class ExceptionLogController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get an exception log by ID")
-    public ResponseEntity<ExceptionLog> getExceptionLogById(@PathVariable Long id) {
+    public ResponseEntity<ExceptionLog> getExceptionLogById(@PathVariable Integer id) {
         Optional<ExceptionLog> exceptionLog = exceptionLogService.getExceptionLogById(id);
         if (exceptionLog.isPresent()) {
             return ResponseEntity.ok(exceptionLog.get());
@@ -53,7 +53,7 @@ public class ExceptionLogController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an exception log by ID")
-    public ResponseEntity<Void> deleteExceptionLog(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteExceptionLog(@PathVariable Integer id) {
         Optional<ExceptionLog> exceptionLog = exceptionLogService.getExceptionLogById(id);
         if (exceptionLog.isPresent()) {
             exceptionLogService.deleteExceptionLog(id);

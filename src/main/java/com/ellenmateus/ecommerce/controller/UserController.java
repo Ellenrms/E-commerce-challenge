@@ -36,7 +36,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a user by ID")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
         Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
@@ -53,7 +53,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a user by ID")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User userDetails) {
         Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {
             User updatedUser = user.get();
@@ -69,7 +69,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a user by ID")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {
             userService.deleteUser(id);
