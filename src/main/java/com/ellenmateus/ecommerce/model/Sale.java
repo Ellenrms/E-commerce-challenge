@@ -23,10 +23,10 @@ import lombok.Data;
 @Data
 @Table(name = "sale")
 public class Sale {
-	
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -36,19 +36,27 @@ public class Sale {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    private LocalDateTime saleDate;
-
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleItem> items = new ArrayList<>();
     
-    
     @OneToOne(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private Payment payment;
-    
     
     @CreationTimestamp
     private LocalDateTime creationDate;
 
     @UpdateTimestamp
-    private LocalDateTime dateUpdate;
+    private LocalDateTime updateDate;
+
+    private LocalDateTime saleDate;
+
+    public void addItem(SaleItem item) {
+        items.add(item);
+        item.setSale(this);
+    }
+
+    public void removeItem(SaleItem item) {
+        items.remove(item);
+        item.setSale(null);
+    }
 }

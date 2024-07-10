@@ -27,23 +27,24 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank(message = "Product name is required")
     private String name;
     
-    @NotBlank(message = "Description is mandatory")
+    @NotBlank(message = "Product description is mandatory")
     private String description;
     
-    @NotNull(message = "Price is mandatory")
+    @NotNull(message = "Product price is mandatory")
     @Min(value = 0, message = "Price must be positive")
     private double price;
 
     
-    @NotNull(message = "Stock is mandatory")
+    @NotNull(message = "Quantity in stock is mandatory")
     @Min(value = 0, message = "Stock must be positive")
     private Long stock;
     
     
     private Boolean active = true;
+    
     
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleItem> saleItems;
@@ -57,5 +58,8 @@ public class Product {
 
     @UpdateTimestamp
     private LocalDateTime dateUpdate;
+    
+    
+   
     
 }
