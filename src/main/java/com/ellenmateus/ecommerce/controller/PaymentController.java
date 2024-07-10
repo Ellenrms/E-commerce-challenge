@@ -16,19 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ellenmateus.ecommerce.model.Payment;
 import com.ellenmateus.ecommerce.service.PaymentService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/payments")
+@Tag(name = "Payments", description = "Endpoints for managing payments")
 public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
 
     @GetMapping
+    @Operation(summary = "Get all payments")
     public List<Payment> getAllPayments() {
         return paymentService.getAllPayments();
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get a payment by ID")
     public ResponseEntity<Payment> getPaymentById(@PathVariable Long id) {
         Optional<Payment> payment = paymentService.getPaymentById(id);
         if (payment.isPresent()) {
@@ -39,11 +45,13 @@ public class PaymentController {
     }
 
     @PostMapping
+    @Operation(summary = "Create a new payment")
     public Payment createPayment(@RequestBody Payment payment) {
         return paymentService.createPayment(payment);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a payment by ID")
     public ResponseEntity<Void> deletePayment(@PathVariable Long id) {
         Optional<Payment> payment = paymentService.getPaymentById(id);
         if (payment.isPresent()) {

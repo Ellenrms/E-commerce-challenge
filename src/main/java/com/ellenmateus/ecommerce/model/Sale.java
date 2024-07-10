@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,10 +22,11 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "sale")
+@Table(name = "Sale entity representing a sales transaction")
 public class Sale {
     
     @Id
+    @Schema(description = "Unique identifier of the sale")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -48,6 +50,8 @@ public class Sale {
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
+    @UpdateTimestamp
+    @Schema(description = "Date and time of the sale", example = "2023-07-01T10:00:00")
     private LocalDateTime saleDate;
 
     public void addItem(SaleItem item) {

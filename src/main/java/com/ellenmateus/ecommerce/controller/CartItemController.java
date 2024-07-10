@@ -16,19 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ellenmateus.ecommerce.model.CartItem;
 import com.ellenmateus.ecommerce.service.CartItemService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/cartitems")
+@Tag(name = "CartItems", description = "Endpoints for managing items within a shopping cart")
 public class CartItemController {
 
     @Autowired
     private CartItemService cartItemService;
 
     @GetMapping
+    @Operation(summary = "Get all cart items")
     public List<CartItem> getAllCartItems() {
         return cartItemService.getAllCartItems();
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get a cart item by ID")
     public ResponseEntity<CartItem> getCartItemById(@PathVariable Long id) {
         Optional<CartItem> cartItem = cartItemService.getCartItemById(id);
         if (cartItem.isPresent()) {
@@ -39,11 +45,13 @@ public class CartItemController {
     }
 
     @PostMapping
+    @Operation(summary = "Create an item to a cart")
     public CartItem createCartItem(@RequestBody CartItem cartItem) {
         return cartItemService.createCartItem(cartItem);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a cart item by ID")
     public ResponseEntity<Void> deleteCartItem(@PathVariable Long id) {
         Optional<CartItem> cartItem = cartItemService.getCartItemById(id);
         if (cartItem.isPresent()) {

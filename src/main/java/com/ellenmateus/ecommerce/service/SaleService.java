@@ -32,7 +32,7 @@ public class SaleService {
 
     public Sale findSaleById(Long id) {
         return saleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Venda não encontrada com o ID: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Sale not found with ID: " + id));
     }
 
     public Sale updateSale(Long id, Sale updatedSale) {
