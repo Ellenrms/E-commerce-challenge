@@ -14,10 +14,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor 
+@NoArgsConstructor
 @Table(name = "cart_item")
 public class CartItem {
 	
@@ -42,4 +46,7 @@ public class CartItem {
 
     @UpdateTimestamp
     private LocalDateTime dateUpdate;
-}
+    		
+    		
+ }
+

@@ -1,19 +1,27 @@
 package com.ellenmateus.ecommerce.service;
 
 
-import com.ellenmateus.ecommerce.model.CartItem;
-import com.ellenmateus.ecommerce.repository.CartItemRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.ellenmateus.ecommerce.dto.DTOCartItem;
+import com.ellenmateus.ecommerce.exception.ResourceNotFoundException;
+import com.ellenmateus.ecommerce.model.CartItem;
+import com.ellenmateus.ecommerce.model.Product;
+import com.ellenmateus.ecommerce.repository.CartItemRepository;
 
 @Service
 public class CartItemService {
 
     @Autowired
     private CartItemRepository cartItemRepository;
+    
+    @Autowired
+    private ProductService productService;
+    
 
     public List<CartItem> getAllCartItems() {
         return cartItemRepository.findAll();
@@ -23,9 +31,30 @@ public class CartItemService {
         return cartItemRepository.findById(id);
     }
 
-    public CartItem createCartItem(CartItem cartItem) {
+    public CartItem createCartItem(DTOCartItem dto) {
+        Product product = productService.getProductById(dto.getProductId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dto.getProductId()));
+        
+        CartItem cartItem = new CartItem();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(dto.getQuantity());
         return cartItemRepository.save(cartItem);
     }
+    
+    public CartItem updateCartItem(Integer id, DTOCartItem dto) {
+        CartItem cartItem = cartItemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cart item not found with ID: " + id));
+        
+        Product product = productService.getProductById(dto.getProductId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dto.getProductId()));
+        
+        cartItem.setProduct(product);
+        cartItem.setQuantity(dto.getQuantity());
+        
+        return cartItemRepository.save(cartItem);
+    }
+    
+
 
     public void deleteCartItem(Integer id) {
         cartItemRepository.deleteById(id);

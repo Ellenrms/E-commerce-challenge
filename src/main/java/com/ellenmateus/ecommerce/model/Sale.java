@@ -34,9 +34,8 @@ public class Sale {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne //mudei de ManyToOne
-    @JoinColumn(name = "address_id", nullable = false)
-    private Address address;
+
+    
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleItem> items = new ArrayList<>();

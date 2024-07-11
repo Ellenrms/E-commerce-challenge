@@ -40,7 +40,6 @@ public class SaleService {
 
         sale.setSaleDate(updatedSale.getSaleDate());
         sale.setUser(updatedSale.getUser());
-        sale.setAddress(updatedSale.getAddress());
         sale.setItems(updatedSale.getItems());
         sale.setPayment(updatedSale.getPayment());
 

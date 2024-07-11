@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ellenmateus.ecommerce.dto.DTOCart;
 import com.ellenmateus.ecommerce.model.Cart;
 import com.ellenmateus.ecommerce.service.CartService;
 
@@ -46,7 +47,7 @@ public class CartController {
 
     @PostMapping
     @Operation(summary = "Create a new cart")
-    public Cart createCart(@RequestBody Cart cart) {
+    public Cart createCart(@RequestBody DTOCart cart) {
         return cartService.createCart(cart);
     }
 

@@ -1,19 +1,27 @@
 package com.ellenmateus.ecommerce.service;
 
 
-import com.ellenmateus.ecommerce.model.Cart;
-import com.ellenmateus.ecommerce.repository.CartRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.ellenmateus.ecommerce.dto.DTOCart;
+import com.ellenmateus.ecommerce.exception.ResourceNotFoundException;
+import com.ellenmateus.ecommerce.model.Cart;
+import com.ellenmateus.ecommerce.model.User;
+import com.ellenmateus.ecommerce.repository.CartRepository;
 
 @Service
 public class CartService {
 
     @Autowired
     private CartRepository cartRepository;
+    
+    @Autowired
+    private UserService userService;
+    
 
     public List<Cart> getAllCarts() {
         return cartRepository.findAll();
@@ -23,7 +31,20 @@ public class CartService {
         return cartRepository.findById(id);
     }
 
-    public Cart createCart(Cart cart) {
+    public Cart createCart(DTOCart dto) {
+        User user = userService.getUserById(dto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + dto.getId()));
+        Cart cart = new Cart();
+        cart.setUser(user);
+        return cartRepository.save(cart);
+    }
+    
+    public Cart updateCart(Integer id, DTOCart dto) {
+        Cart cart = cartRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cart not found with ID: " + id));
+        User user = userService.getUserById(dto.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + dto.getId()));
+        
+        cart.setUser(user);
+        
         return cartRepository.save(cart);
     }
 

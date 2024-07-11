@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,16 +42,17 @@ public class ProductController {
     @Operation(summary = "Search for a product by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Integer id) {
-        Product product = productService.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
+        DtoProduct product = productService.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
         return ResponseEntity.ok(product);
     }
 
     
     @Operation(summary = "Add a new product")
     @PostMapping
-    public ResponseEntity<DTOProduct> createProduct(@RequestBody DTOProduct dtoProduct) {
-        DTOProduct savedProduct = productService.save(dtoProduct);
-        return ResponseEntity.ok(savedProduct);
+    public ResponseEntity<DTOProduct> createProduct(@RequestBody DTOProduct dtoproduct) {
+        DTOProduct createdProduct = productService.save(dtoproduct);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+         
     }
 
     

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ellenmateus.ecommerce.dto.DTOAddress;
 import com.ellenmateus.ecommerce.model.Address;
 import com.ellenmateus.ecommerce.service.AddressService;
 
@@ -47,21 +48,13 @@ public class AddressController {
 
     @PostMapping
     @Operation(summary = "Create a new address")
-    public Address createAddress(@RequestBody Address address) {
+    public Address createAddress(@RequestBody DTOAddress address) {
         return addressService.save(address);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Address> updateAddress(@PathVariable Integer id, @RequestBody Address addressDetails) {
-        Optional<Address> address = addressService.findById(id);
-        if (address.isPresent()) {
-            Address updatedAddress = address.get();
-            updatedAddress.setCity(addressDetails.getCity());
-            updatedAddress = addressService.save(updatedAddress);
-            return ResponseEntity.ok(updatedAddress);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Address> updateAddress(@PathVariable Integer id, @RequestBody DTOAddress addressDetails) {
+        return ResponseEntity.ok(addressService.update(id, addressDetails));
     }
 
     @DeleteMapping("/{id}")

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ellenmateus.ecommerce.dto.DTOUser;
 import com.ellenmateus.ecommerce.model.User;
 import com.ellenmateus.ecommerce.service.UserService;
 
@@ -47,20 +48,19 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Create a new user")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody DTOUser user) {
         return userService.createUser(user);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a user by ID")
-    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody DTOUser userDetails) {
         Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {
             User updatedUser = user.get();
             updatedUser.setName(userDetails.getName());
             updatedUser.setEmail(userDetails.getEmail());
             updatedUser.setPassword(userDetails.getPassword());
-            updatedUser = userService.createUser(updatedUser);
             return ResponseEntity.ok(updatedUser);
         } else {
             return ResponseEntity.notFound().build();
