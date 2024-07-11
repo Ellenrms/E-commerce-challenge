@@ -8,6 +8,9 @@ Este projeto é uma aplicação E-commerce construída usando Java 17 e Spring B
 - **Spring Boot 3.3.1**: Framework para facilitar a configuração e o desenvolvimento de aplicações.
 - **MySQL**: Sistema de gerenciamento de banco de dados relacional.
 - **Swagger**: Ferramenta para documentação de APIs REST.
+- Este projeto segue uma **Arquitetura em Camadas** e é construído seguindo os princípios **RESTful**
+  para organizar a aplicação de forma eficiente e facilitar a manutenção.
+
 
 ## Configuração do Ambiente
 
@@ -25,11 +28,14 @@ Configurar o Banco de Dados
 
 Crie um banco de dados no MySQL.
 
-Atualize o arquivo src/main/resources/application.properties com as credenciais do seu banco de dados.
+Atualize o arquivo src/main/resources/application.properties 
+com as credenciais do seu banco de dados.
 
+''
 spring.datasource.url=jdbc:mysql://localhost:3306/seu_banco_de_dados
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
+''
 
 ### Executar o Projeto
 
