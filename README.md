@@ -1,4 +1,4 @@
-# E-commerce Application
+# E-commerce Application -> DESAFIO 03 – Desenvolvendo aplicações para um eCommerce
 
 Este projeto é uma aplicação E-commerce construída usando Java 17 e Spring Boot 3.3.1. Ele suporta gerenciamento de produtos e vendas, com uma arquitetura RESTful.
 
