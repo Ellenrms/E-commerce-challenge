@@ -38,14 +38,9 @@ spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
 ''
 
-### Executar o Projeto
-
-Execute o projeto através do seu ambiente de desenvolvimento integrado (IDE) ou através do comando java -jar 
-se estiver usando um arquivo JAR executável.
-
 
 ### Utilização da API
-Uma vez que a aplicação esteja rodando, você pode acessar a documentação da API e testar os endpoints através 
+Uma vez que a aplicação esteja "rodando", você pode acessar a documentação da API e testar os endpoints através 
 do Swagger acessando:
 
 http://localhost:8080/swagger-ui.html
