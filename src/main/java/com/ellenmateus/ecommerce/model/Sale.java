@@ -18,6 +18,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -35,10 +36,12 @@ public class Sale {
     private User user;
 
 
-    
-
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleItem> items = new ArrayList<>();
+    
+    @NotNull(message = "Total amount is mandatory")
+    private Double totalAmount;
+    
     
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Payment payment;
@@ -52,6 +55,7 @@ public class Sale {
     @UpdateTimestamp
     @Schema(description = "Date and time of the sale", example = "2023-07-01T10:00:00")
     private LocalDateTime saleDate;
+    
 
     public void addItem(SaleItem item) {
         items.add(item);
@@ -62,4 +66,6 @@ public class Sale {
         items.remove(item);
         item.setSale(null);
     }
+    
+    
 }

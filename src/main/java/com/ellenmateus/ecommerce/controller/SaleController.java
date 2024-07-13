@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ellenmateus.ecommerce.dto.DTOSale;
 import com.ellenmateus.ecommerce.model.Sale;
 import com.ellenmateus.ecommerce.service.SaleService;
 
@@ -49,8 +50,9 @@ public class SaleController {
 
     @PostMapping
     @Operation(summary = "Create a new sale")
-    public Sale createSale(@RequestBody Sale sale) {
-        return saleService.createSale(sale);
+    public ResponseEntity<Sale> createSale(@RequestBody DTOSale dto) {
+        Sale sale = saleService.createSale(dto);
+        return ResponseEntity.ok(sale);
     }
 
     @PutMapping("/{id}")

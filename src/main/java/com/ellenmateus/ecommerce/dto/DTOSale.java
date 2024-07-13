@@ -16,7 +16,13 @@ import lombok.NoArgsConstructor;
 	    private Integer addressId;
 	    private List<DTOSaleItem> items;
 	    private Integer paymentId;
+	    private Double totalAmount;
 	    private LocalDateTime saleDate;
+	    
+	    public Double getTotalAmount() {
+	        return totalAmount;
+	    }
+
 	}
 
 

@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ellenmateus.ecommerce.dto.DTOProduct;
@@ -25,11 +24,12 @@ public class ProductService {
 
 	@Autowired
 	private SaleService saleService;
+	
 
+	
 	
 	private Product convertToEntity(DTOProduct dtoProduct) {
 		Product product = new Product();
-		product.setId(dtoProduct.getId());
 		product.setName(dtoProduct.getName());
 		product.setDescription(dtoProduct.getDescription());
 		product.setPrice(dtoProduct.getPrice());
@@ -38,30 +38,36 @@ public class ProductService {
 		return product;
 	}
 	
+	
+	
+		@Cacheable(value = "products")
+		public List<Product> findAll() {
+		return productRepository.findAll();
+	}
 		
-	 public Optional<Product> getProductById(Integer id) {
+		
+		public Optional<Product> getProductById(Integer id) {
 	        return productRepository.findById(id);
-  }
+   }
 	 
 	
 	
 	@Operation(summary = "Save a new product")
 	@CacheEvict(value = "products", allEntries = true)
-	   public DTOProduct save(DTOProduct dtoProduct) {
-		return dtoProduct;
+	   public Product save(DTOProduct dtoProduct) {
+		Product product = convertToEntity(dtoProduct);
+		return productRepository.save(product);
+		
     }
 	 
-
 	
-	@Cacheable("products")
-	public List<Product> findAll() {
-		return productRepository.findAll();
-	}
 
 	@Operation(summary = "Check if a product is on sale")
 	public boolean isProductInAnySale(Integer productId) {
 		return saleService.isProductInAnySale(productId);
 	}
+	
+	
 
 	@Operation(summary = "Deactivate a product")
 	@CacheEvict(value = "products", allEntries = true)
@@ -72,29 +78,28 @@ public class ProductService {
 		productRepository.save(product);
 	}
 
+	
 	@Operation(summary = "Delete a product by ID")
 	@CacheEvict(value = "products", allEntries = true)
 	public void deleteById(Integer id) {
 		productRepository.deleteById(id);
 	}
+	
 
 	@Operation(summary = "Search for a product by ID")
 	@Cacheable(value = "products", key = "#id")
 	public Optional<Product> findById(Integer id) {
 		return productRepository.findById(id);
 	}
+	
 
 	@Operation(summary = "Update an existing product")
 	@CacheEvict(value = "products", allEntries = true)
 	public Product updateProduct(Integer id, DTOProduct dtoProduct) {
 		Product product = productRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
-		product.setName(dtoProduct.getName());
-		product.setDescription(dtoProduct.getDescription());
-		product.setPrice(dtoProduct.getPrice());
-		product.setActive(dtoProduct.isActive());
-		product.setStock(dtoProduct.getStock());
-		  return ResponseEntity.ok(dtoProduct);
+		product = convertToEntity(dtoProduct);
+		return productRepository.save(product);
 		
 	}
 }

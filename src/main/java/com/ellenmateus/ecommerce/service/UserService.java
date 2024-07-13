@@ -26,15 +26,6 @@ public class UserService {
     }
 
     
-    public User save(DTOUser dtoUser) {
-        User user = new User();
-        user.setName(dtoUser.getName());
-        user.setEmail(dtoUser.getEmail());
-        user.setPassword(dtoUser.getPassword());
-        return userRepository.save(user);
-    }
-        
-        
     public User createUser(DTOUser dto) {
     	User user = new User();
         user.setName(dto.getName());
@@ -42,6 +33,15 @@ public class UserService {
         user.setPassword(dto.getPassword());
         return userRepository.save(user);
     }
+    
+    public User save(DTOUser dtoUser) {
+        User user = new User();
+        user.setName(dtoUser.getName());
+        user.setEmail(dtoUser.getEmail());
+        user.setPassword(dtoUser.getPassword());
+        return userRepository.save(user);
+    }
+    
     
     public User updateUser(Integer id, DTOUser dto) {
         User user = userRepository.findById(id)

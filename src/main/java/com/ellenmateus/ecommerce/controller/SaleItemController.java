@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ellenmateus.ecommerce.dto.DTOSaleItem;
+import com.ellenmateus.ecommerce.exception.ResourceNotFoundException;
+import com.ellenmateus.ecommerce.model.Sale;
 import com.ellenmateus.ecommerce.model.SaleItem;
 import com.ellenmateus.ecommerce.service.SaleItemService;
+import com.ellenmateus.ecommerce.service.SaleService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,9 +28,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/saleitems")
 @Tag(name = "SaleItem", description = "Endpoints for managing sale items, which represent individual products within a sale.")
 public class SaleItemController {
+	
+	
 
     @Autowired
     private SaleItemService saleItemService;
+    
+    @Autowired
+    private SaleService saleService;
+    
+    
 
     @GetMapping
     @Operation(summary = "Get all sale items")
@@ -43,13 +55,16 @@ public class SaleItemController {
             return ResponseEntity.notFound().build();
         }
     }
+    
 
     @PostMapping
     @Operation(summary = "Create a new sale item")
-    public SaleItem createSaleItem(@RequestBody SaleItem saleItem) {
-        return saleItemService.createSaleItem(saleItem);
+    public SaleItem createSaleItem(@RequestBody DTOSaleItem dtosaleItem, @RequestParam Integer saleId) {
+    	Sale sale = saleService.findById(saleId).orElseThrow(() -> new ResourceNotFoundException("Sale not found with ID: " + saleId));
+        return saleItemService.createSaleItem(sale);
     }
 
+    
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a sale item by ID")
     public ResponseEntity<Void> deleteSaleItem(@PathVariable Integer id) {

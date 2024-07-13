@@ -30,11 +30,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     
+    
     @Operation(summary = "Search all products")
     @Cacheable("products")
     @GetMapping
-    public List<DTOProduct> findAll() {
-        return productService.findAll();
+    public ResponseEntity<List<Product>> findAll() {
+        return ResponseEntity.ok(productService.findAll()) ;
 
     }
     
@@ -42,15 +43,15 @@ public class ProductController {
     @Operation(summary = "Search for a product by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Integer id) {
-        DtoProduct product = productService.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
+      Product product = productService.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
         return ResponseEntity.ok(product);
     }
 
     
     @Operation(summary = "Add a new product")
     @PostMapping
-    public ResponseEntity<DTOProduct> createProduct(@RequestBody DTOProduct dtoproduct) {
-        DTOProduct createdProduct = productService.save(dtoproduct);
+    public ResponseEntity<Product> createProduct(@RequestBody DTOProduct dtoproduct) {
+        Product createdProduct = productService.save(dtoproduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
          
     }
@@ -58,8 +59,8 @@ public class ProductController {
     
     @Operation(summary = "Update an existing product")
     @PutMapping("/{id}")
-    public ResponseEntity<DTOProduct> updateProduct(@PathVariable Integer id, @RequestBody DTOProduct dtoProduct) {
-        DTOProduct updatedProduct = productService.updateProduct(id, dtoProduct);
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer id, @RequestBody DTOProduct dtoProduct) {
+        Product updatedProduct = productService.updateProduct(id, dtoProduct);
         return ResponseEntity.ok(updatedProduct);
     }
     

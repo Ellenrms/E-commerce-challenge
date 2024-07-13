@@ -32,8 +32,8 @@ public class CartItemService {
     }
 
     public CartItem createCartItem(DTOCartItem dto) {
-        Product product = productService.getProductById(dto.getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dto.getProductId()));
+        Product product = productService.getProductById(dto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dto.getId()));
         
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
@@ -45,8 +45,8 @@ public class CartItemService {
         CartItem cartItem = cartItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart item not found with ID: " + id));
         
-        Product product = productService.getProductById(dto.getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dto.getProductId()));
+        Product product = productService.getProductById(dto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dto.getId()));
         
         cartItem.setProduct(product);
         cartItem.setQuantity(dto.getQuantity());
