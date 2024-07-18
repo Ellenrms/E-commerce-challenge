@@ -1,6 +1,5 @@
 package com.ellenmateus.ecommerce.service;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -8,90 +7,92 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ellenmateus.ecommerce.dto.DTOCart;
+import com.ellenmateus.ecommerce.dto.DTONewCartItem;
 import com.ellenmateus.ecommerce.exception.ResourceNotFoundException;
 import com.ellenmateus.ecommerce.model.Cart;
 import com.ellenmateus.ecommerce.model.CartItem;
+import com.ellenmateus.ecommerce.model.Product;
 import com.ellenmateus.ecommerce.model.User;
 import com.ellenmateus.ecommerce.repository.CartRepository;
 
 @Service
 public class CartService {
 
-    @Autowired
-    private CartRepository cartRepository;
-    
-    @Autowired
-    private UserService userService;
-    
-    @Autowired
-    private CartItemService cartItemService;
-    
-    
-    
+	@Autowired
+	private CartRepository cartRepository;
 
-    public List<Cart> getAllCarts() {
-        return cartRepository.findAll();
-    }
-    
+	@Autowired
+	private UserService userService;
 
-    public Optional<Cart> getCartById(Integer id) {
-        return cartRepository.findById(id);
-    }
+	@Autowired
+	private CartItemService cartItemService;
 
-    
-    
-    public Cart createCart(DTOCart dto) {
-        User user = userService.getUserById(dto.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + dto.getId()));
-        			Cart cart = new Cart();
-        			cart.setUser(user);
-        			return cartRepository.save(cart);
-    }
-    
-    
-    public Cart updateCart(Integer id, DTOCart dto) {
-        Cart cart = cartRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cart not found with ID: " + id));
-        User user = userService.getUserById(dto.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + dto.getId()));
-             cart.setUser(user);
-             return cartRepository.save(cart);
-    }
-    
+	@Autowired
+	private ProductService productService;
 
-    public void deleteCart(Integer id) {
-        cartRepository.deleteById(id);
-    }
+	public List<Cart> getAllCarts() {
+		return cartRepository.findAll();
+	}
 
-    
-    public Cart getActiveCart(Integer userId) {
-        return cartRepository.findByUserIdAndStatus(userId, Cart.CartStatus.ACTIVE);
-    }
- 
-    
-    public Cart addItemToCart(Integer userId, CartItem cartItem) {
-        	Cart cart = getActiveCart(userId);
-        		if (cart == null) {
-        	cart = new Cart();
-            User user = userService.getUserById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
-            cart.setUser(user);
-            cart.setStatus(Cart.CartStatus.ACTIVE);
-        }
+	public Optional<Cart> getCartById(Integer id) {
+		return cartRepository.findById(id);
+	}
 
-        		cart.getItems().add(cartItem);
-        		cartItem.setCart(cart);
-        		return cartRepository.save(cart);
-    }
+	public Cart findById(Integer id) {
+		Optional<Cart> obj = cartRepository.findById(id);
+		return obj.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+	}
 
-    public void removeItemFromCart(Integer cartItemId) {
-        cartItemService.deleteCartItem(cartItemId);
-    }
+	public Cart createCart(Integer userId) {
+		User user = userService.getUserById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+		Cart cart = new Cart();
+		cart.setUser(user);
+		return cartRepository.save(cart);
+	}
 
-    
-    
-    public void finalizeCart(Integer userId) {
-        	Cart cart = getActiveCart(userId);
-        		if (cart != null) {
-            cart.setStatus(Cart.CartStatus.FINALIZED);
-            cartRepository.save(cart);
-        }
-    }
+	public Cart updateCart(Integer id, DTOCart dto) {
+		Cart cart = cartRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Cart not found with ID: " + id));
+		User user = userService.getUserById(dto.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + dto.getId()));
+		cart.setUser(user);
+		return cartRepository.save(cart);
+	}
+
+	public void deleteCart(Integer id) {
+		cartRepository.deleteById(id);
+	}
+
+	public Cart getActiveCart(Integer userId) {
+		return cartRepository.findByUserIdAndStatus(userId, Cart.CartStatus.ACTIVE);
+	}
+
+	public Cart addItemToCart(DTONewCartItem dtoNewCartItem) {
+		Cart cart = findById(dtoNewCartItem.cartId());
+
+		// procurar o produto
+		 Product product = productService.getProductById(dtoNewCartItem.productId())
+	                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dtoNewCartItem.productId()));
+
+		// chamar metodo para criar um itemCart createSaleItem2
+		CartItem cartItem = cartItemService.createCartItem2(product, cart, dtoNewCartItem.quantity());
+
+		// inserir o item ao carrinho
+		cart.getItems().add(cartItem);
+
+		return cartRepository.save(cart);
+	}
+
+	public void removeItemFromCart(Integer cartItemId) {
+		cartItemService.deleteCartItem(cartItemId);
+	}
+
+	public void finalizeCart(Integer cartId) {
+		Cart cart = getActiveCart(cartId);
+		if (cart != null) {
+			cart.setStatus(Cart.CartStatus.FINALIZED);
+			cartRepository.save(cart);
+		}
+	}
 }
-

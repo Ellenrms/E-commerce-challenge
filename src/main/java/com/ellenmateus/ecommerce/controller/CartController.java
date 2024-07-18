@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ellenmateus.ecommerce.dto.DTOCart;
+import com.ellenmateus.ecommerce.dto.DTONewCartItem;
 import com.ellenmateus.ecommerce.model.Cart;
-import com.ellenmateus.ecommerce.model.CartItem;
 import com.ellenmateus.ecommerce.service.CartService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,72 +27,61 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Carts", description = "Endpoints for managing shopping carts")
 public class CartController {
 
-    @Autowired
-    private CartService cartService;
-    
-    
-    
-    @GetMapping("/active")
-    public Cart getActiveCart(@RequestParam Integer userId) {
-        return cartService.getActiveCart(userId);
-    }
+	@Autowired
+	private CartService cartService;
 
-    
-    @PostMapping("/add")
-    public Cart addItemToCart(@RequestParam Integer userId, @RequestBody CartItem cartItem) {
-        return cartService.addItemToCart(userId, cartItem);
-    }
-    
-    
-    @DeleteMapping("/remove/{itemId}")
-    public void removeItemFromCart(@PathVariable Integer itemId) {
-        cartService.removeItemFromCart(itemId);
-    }
-    
-    
-    @PostMapping("/finalize")
-    public void finalizeCart(@RequestParam Integer userId) {
-        cartService.finalizeCart(userId);
-    }
-    
-    
-    @GetMapping
-    @Operation(summary = "Get all carts")
-    public List<Cart> getAllCarts() {
-        return cartService.getAllCarts();
-    }
-    
+	@GetMapping("/active")
+	public Cart getActiveCart(@RequestParam Integer userId) {
+		return cartService.getActiveCart(userId);
+	}
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get a cart by ID")
-    public ResponseEntity<Cart> getCartById(@PathVariable Integer id) {
-        Optional<Cart> cart = cartService.getCartById(id);
-        if (cart.isPresent()) {
-            return ResponseEntity.ok(cart.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@PostMapping("/create/{userId}")
+	public Cart create(@PathVariable Integer userId) {
+		return cartService.createCart(userId);
+	}
 
-    
-    
-    @PostMapping
-    @Operation(summary = "Create a new cart")
-    public Cart createCart(@RequestBody DTOCart cart) {
-        return cartService.createCart(cart);
-    }
+	@PostMapping("/add-item")
+	public Cart addItemToCart(@RequestBody DTONewCartItem dtoNewCartItem) {
+		return cartService.addItemToCart(dtoNewCartItem);
+	}
 
-    
-    
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a cart by ID")
-    public ResponseEntity<Void> deleteCart(@PathVariable Integer id) {
-        Optional<Cart> cart = cartService.getCartById(id);
-        		if (cart.isPresent()) {
-        			cartService.deleteCart(id);
-        		return ResponseEntity.ok().build();
-        	} else {
-        		return ResponseEntity.notFound().build();
-        }
-    }
+	@DeleteMapping("/remove/{itemId}")
+	public void removeItemFromCart(@PathVariable Integer itemId) {
+		cartService.removeItemFromCart(itemId);
+	}
+
+	@PostMapping("/finalize")
+	public void finalizeCart(@RequestParam Integer cartId) {
+		cartService.finalizeCart(cartId);
+	}
+
+	@GetMapping
+	@Operation(summary = "Get all carts")
+	public List<Cart> getAllCarts() {
+		return cartService.getAllCarts();
+	}
+
+	@GetMapping("/{id}")
+	@Operation(summary = "Get a cart by ID")
+	public ResponseEntity<Cart> getCartById(@PathVariable Integer id) {
+		Optional<Cart> cart = cartService.getCartById(id);
+		if (cart.isPresent()) {
+			return ResponseEntity.ok(cart.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	
+	@DeleteMapping("/{id}")
+	@Operation(summary = "Delete a cart by ID")
+	public ResponseEntity<Void> deleteCart(@PathVariable Integer id) {
+		Optional<Cart> cart = cartService.getCartById(id);
+		if (cart.isPresent()) {
+			cartService.deleteCart(id);
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 }

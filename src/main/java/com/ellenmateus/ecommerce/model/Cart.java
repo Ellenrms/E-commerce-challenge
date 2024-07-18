@@ -1,11 +1,12 @@
 package com.ellenmateus.ecommerce.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -35,10 +36,11 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> items = new ArrayList<>();
+    private List<CartItem> items;
     
     @CreationTimestamp
     private LocalDateTime creationDate;
@@ -53,7 +55,7 @@ public class Cart {
     
     public enum CartStatus {
         ACTIVE,
-        PENDING,
+        INACTIVE, 
         FINALIZED
     
     }

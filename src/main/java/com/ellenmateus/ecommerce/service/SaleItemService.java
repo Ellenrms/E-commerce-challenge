@@ -1,6 +1,5 @@
 package com.ellenmateus.ecommerce.service;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -19,46 +18,58 @@ import com.ellenmateus.ecommerce.repository.SaleItemRepository;
 @Service
 public class SaleItemService {
 
-    @Autowired
-    private SaleItemRepository saleItemRepository;
-    
-    @Autowired
+	@Autowired
+	private SaleItemRepository saleItemRepository;
+
+	@Autowired
 	private SaleService saleService;
-    
-    @Autowired
-    private ProductRepository productRepository; 
-    
 
-    
-    
-    public List<SaleItem> getAllSaleItems() {
-        return saleItemRepository.findAll();
-    }
+	@Autowired
+	private ProductRepository productRepository;
 
-    public Optional<SaleItem> getSaleItemById(Integer id) {
-        return saleItemRepository.findById(id);
-    }
+	public List<SaleItem> getAllSaleItems() {
+		return saleItemRepository.findAll();
+	}
 
-    
-    @CacheEvict(value = "sales", allEntries = true)
-    public SaleItem createSaleItem(DTOSaleItem dto, Sale sale) {
-        Product product = productRepository.findById(dto.getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dto.getProductId()));
-        
-        SaleItem saleItem = new SaleItem();
-        saleItem.setProduct(product);
-        saleItem.setQuantity(dto.getQuantity());
-        saleItem.setPrice(dto.getPrice());
-        saleItem.setSale(sale);
-        
-        return saleItemRepository.save(saleItem);
-        
-    }
-    
+	public Optional<SaleItem> getSaleItemById(Integer id) {
+		return saleItemRepository.findById(id);
+	}
 
-    public void deleteSaleItem(Integer id) {
-        saleItemRepository.deleteById(id);
-    }
+	@CacheEvict(value = "sales", allEntries = true)
+	public SaleItem createSaleItem(DTOSaleItem dto) {
+		Product product = productRepository.findById(dto.getProductId())
+				.orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dto.getProductId()));
 
- 
+		Sale sale = saleService.findSaleById(dto.getSaleId());
+		SaleItem saleItem = new SaleItem();
+		saleItem.setProduct(product);
+		saleItem.setQuantity(dto.getQuantity());
+		saleItem.setPrice(dto.getPrice());
+		saleItem.setSale(sale);
+
+		return saleItemRepository.save(saleItem);
+
+	}
+
+	@CacheEvict(value = "sales", allEntries = true)
+	public SaleItem updateSaleItem(DTOSaleItem dto, Integer itemId) {
+		Product product = productRepository.findById(dto.getProductId())
+				.orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dto.getProductId()));
+
+		Sale sale = saleService.findSaleById(dto.getSaleId());
+		SaleItem saleItem = getSaleItemById(itemId)
+				.orElseThrow(() -> new ResourceNotFoundException("Item not found with ID: " + itemId));
+		saleItem.setProduct(product);
+		saleItem.setQuantity(dto.getQuantity());
+		saleItem.setPrice(dto.getPrice());
+		saleItem.setSale(sale);
+
+		return saleItemRepository.save(saleItem);
+
+	}
+
+	public void deleteSaleItem(Integer id) {
+		saleItemRepository.deleteById(id);
+	}
+
 }

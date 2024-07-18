@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 	public class DTOSale {
 		private Integer id;
 	    private Integer userId;
-	    private Integer addressId;
 	    private List<DTOSaleItem> items;
 	    private Integer paymentId;
 	    private Double totalAmount;

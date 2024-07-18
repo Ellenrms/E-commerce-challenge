@@ -28,52 +28,46 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/saleitems")
 @Tag(name = "SaleItem", description = "Endpoints for managing sale items, which represent individual products within a sale.")
 public class SaleItemController {
-	
-	
 
-    @Autowired
-    private SaleItemService saleItemService;
-    
-    @Autowired
-    private SaleService saleService;
-    
-    
+	@Autowired
+	private SaleItemService saleItemService;
 
-    @GetMapping
-    @Operation(summary = "Get all sale items")
-    public List<SaleItem> getAllSaleItems() {
-        return saleItemService.getAllSaleItems();
-    }
+	@Autowired
+	private SaleService saleService;
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Find a sale item by ID")
-    public ResponseEntity<SaleItem> getSaleItemById(@PathVariable Integer id) {
-        Optional<SaleItem> saleItem = saleItemService.getSaleItemById(id);
-        if (saleItem.isPresent()) {
-            return ResponseEntity.ok(saleItem.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    
+	@GetMapping
+	@Operation(summary = "Get all sale items")
+	public List<SaleItem> getAllSaleItems() {
+		return saleItemService.getAllSaleItems();
+	}
 
-    @PostMapping
-    @Operation(summary = "Create a new sale item")
-    public SaleItem createSaleItem(@RequestBody DTOSaleItem dtosaleItem, @RequestParam Integer saleId) {
-    	Sale sale = saleService.findById(saleId).orElseThrow(() -> new ResourceNotFoundException("Sale not found with ID: " + saleId));
-        return saleItemService.createSaleItem(sale);
-    }
+	@GetMapping("/{id}")
+	@Operation(summary = "Find a sale item by ID")
+	public ResponseEntity<SaleItem> getSaleItemById(@PathVariable Integer id) {
+		Optional<SaleItem> saleItem = saleItemService.getSaleItemById(id);
+		if (saleItem.isPresent()) {
+			return ResponseEntity.ok(saleItem.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-    
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a sale item by ID")
-    public ResponseEntity<Void> deleteSaleItem(@PathVariable Integer id) {
-        Optional<SaleItem> saleItem = saleItemService.getSaleItemById(id);
-        if (saleItem.isPresent()) {
-            saleItemService.deleteSaleItem(id);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@PostMapping
+	@Operation(summary = "Create a new sale item")
+	public ResponseEntity<SaleItem> createSaleItem(@RequestBody DTOSaleItem dtosaleItem) {
+		return ResponseEntity.ok(saleItemService.createSaleItem(dtosaleItem));
+
+	}
+
+	@DeleteMapping("/{id}")
+	@Operation(summary = "Delete a sale item by ID")
+	public ResponseEntity<Void> deleteSaleItem(@PathVariable Integer id) {
+		Optional<SaleItem> saleItem = saleItemService.getSaleItemById(id);
+		if (saleItem.isPresent()) {
+			saleItemService.deleteSaleItem(id);
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 }

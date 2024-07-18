@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,33 +22,34 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "cart_item")
 public class CartItem {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@ManyToOne
+	@JoinColumn(name = "cart_id", nullable = false)
+	@JsonIgnore
+	private Cart cart;
+
+	@ManyToOne
+	@JoinColumn(name = "product_id", nullable = false)
+	private Product product;
+
+	@NotNull(message = "Quantity is mandatory")
+	@Min(value = 1, message = "Quantity must be at least 1")
+	private Integer quantity;
 	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id",nullable = false)
-    private Cart cart;
+	@CreationTimestamp
+	private LocalDateTime creationDate;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+	@UpdateTimestamp
+	private LocalDateTime dateUpdate;
 
-    @NotNull(message = "Quantity is mandatory")
-    @Min(value = 1, message = "Quantity must be at least 1")
-    private Integer quantity;
-    
-    @CreationTimestamp
-    private LocalDateTime creationDate;
-
-    @UpdateTimestamp
-    private LocalDateTime dateUpdate;
-    		
-    		
- }
-
+}

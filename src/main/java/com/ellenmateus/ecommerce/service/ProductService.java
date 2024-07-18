@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.ellenmateus.ecommerce.dto.DTOProduct;
@@ -23,6 +24,7 @@ public class ProductService {
 	private ProductRepository productRepository;
 
 	@Autowired
+	@Lazy
 	private SaleService saleService;
 	
 
