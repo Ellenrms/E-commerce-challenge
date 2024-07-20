@@ -69,6 +69,7 @@ public class SaleService {
 				.orElseThrow(() -> new IllegalArgumentException("Sale not found with ID: " + id));
 	}
 
+	@Cacheable(value = "sales", key = "#id")
 	public Sale updateSale(Integer id, Sale updatedSale) {
 		Sale sale = findSaleById(id);
 

@@ -1,10 +1,14 @@
 package com.ellenmateus.ecommerce.model;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,36 +26,74 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
-	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class User implements UserDetails {
 
-    @NotBlank(message = "Name is mandatory")
-    private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email is mandatory")
-    private String email;
+	@NotBlank(message = "Name is mandatory")
+	private String name;
 
-    @NotBlank(message = "Password is mandatory")
-    private String password;
+	@Email(message = "Email should be valid")
+	@NotBlank(message = "Email is mandatory")
+	private String email;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<Address> addresses;
+	@NotBlank(message = "Password is mandatory")
+	private String password;
 
-    @OneToMany(mappedBy = "user")	
-    @JsonIgnore
-    private List<Cart> carts;
-    
-    @CreationTimestamp
-    private LocalDateTime creationDate;
+	private String role;
+	private String resetToken;
 
-    @UpdateTimestamp
-    private LocalDateTime dateUpdate;
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Address> addresses;
+
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Cart> carts;
+
+	@CreationTimestamp
+	private LocalDateTime creationDate;
+
+	@UpdateTimestamp
+	private LocalDateTime dateUpdate;
+
+	@Override
+	@JsonIgnore
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority(role));
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isEnabled() {
+		return true;
+	}
+
+	@Override
+	public String getUsername() {
+		return name;
+	}
 }
