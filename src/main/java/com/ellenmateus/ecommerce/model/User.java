@@ -46,6 +46,7 @@ public class User implements UserDetails {
 	private String password;
 
 	private String role;
+
 	private String resetToken;
 
 	@OneToMany(mappedBy = "user")
@@ -65,7 +66,11 @@ public class User implements UserDetails {
 	@Override
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role));
+		if (this.role == "ADMIN") {
+			return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER"));
+		} else {
+			return List.of(new SimpleGrantedAuthority(role));
+		}
 	}
 
 	@Override

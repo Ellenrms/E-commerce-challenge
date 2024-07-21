@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.ellenmateus.ecommerce.model.User;
 import com.ellenmateus.ecommerce.repository.UserRepository;
 
 import jakarta.servlet.FilterChain;
@@ -30,7 +31,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
         if (token != null) {
             var login = tokenService.validateToken(token);
-            UserDetails user = userRepository.findByName(login);
+            User user = userRepository.findByName(login);
             
             
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
