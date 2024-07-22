@@ -46,12 +46,41 @@ do Swagger acessando:
 http://localhost:8080/swagger-ui.html
 
 ### Funcionalidades
-Gerenciamento de Produtos: Permite realizar operações CRUD em produtos.
+
+Gerenciamento de Produtos: Permite realizar operações CRUD (Create, Read, Update, Delete) em produtos.
 Gerenciamento de Vendas: Permite realizar operações CRUD em vendas, além de gerar relatórios de vendas.
-Contribuições
-Contribuições são sempre bem-vindas. Para contribuir, por favor, crie um fork do repositório, faça suas alterações, e envie um pull request.
+Autenticação e Autorização: Implementação de segurança com JWT para proteger as APIs e controlar o acesso.
+Envio de E-mails: Funcionalidade para enviar e-mails de recuperação de senha.
+
+###Endpoints Principais
+
+##Produtos:
+GET /api/products - Listar todos os produtos.
+POST /api/products - Adicionar um novo produto.
+PUT /api/products/{id} - Atualizar um produto existente.
+DELETE /api/products/{id} - Excluir um produto.
+
+##Vendas:
+GET /api/sales - Listar todas as vendas.
+POST /api/sales - Criar uma nova venda.
+PUT /api/sales/{id} - Atualizar uma venda existente.
+DELETE /api/sales/{id} - Excluir uma venda.
+
+##Autenticação:
+POST /auth/register - Registrar um novo usuário.
+POST /auth/login - Autenticar um usuário e gerar um token JWT.
+
+##Principais Anotações Utilizadas
+@RestController: Indica que a classe é um controlador REST.
+@RequestMapping: Mapeia requisições HTTP para métodos específicos.
+@PostMapping, @GetMapping, @PutMapping, @DeleteMapping: Mapeiam métodos HTTP POST, GET, PUT e DELETE, respectivamente.
+@Valid: Indica que o objeto deve ser validado.
+@Autowired: Injeta dependências automaticamente.
+@Service: Indica que a classe é um serviço.
+@Repository: Indica que a classe é um repositório, responsável por operações de acesso a dados.
+@Entity: Indica que a classe é uma entidade JPA.
 
 
 
-Autora
+##Autora
 Ellen Mateus 
