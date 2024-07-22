@@ -55,17 +55,10 @@ public class UserController {
     @PutMapping("/{id}")
     @Operation(summary = "Update a user by ID")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody DTOUser userDetails) {
-        Optional<User> user = userService.getUserById(id);
-        if (user.isPresent()) {
-            User updatedUser = user.get();
-            updatedUser.setName(userDetails.getName());
-            updatedUser.setEmail(userDetails.getEmail());
-            updatedUser.setPassword(userDetails.getPassword());
-            return ResponseEntity.ok(updatedUser);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+     User user = userService.updateUser(id, userDetails);
+     return ResponseEntity.ok().body(user);
     }
+    
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a user by ID")

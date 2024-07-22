@@ -45,11 +45,11 @@ public class CartItemController {
         }
     }
 
-    @PostMapping
+    /*@PostMapping
     @Operation(summary = "Create an item to a cart")
     public CartItem createCartItem(@RequestBody DTOCartItem cartItem) {
         return cartItemService.createCartItem(cartItem);
-    }
+    }*/
 
     
     

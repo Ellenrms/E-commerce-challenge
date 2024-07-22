@@ -117,7 +117,8 @@ public class SaleService {
 
 	// metodo vai transformar o carrinho em venda
 	public Sale createSaleFromCart(Integer cartId) {
-		Cart cart = cartService.getActiveCart(cartId);
+		Cart cart = cartService.getCartById(cartId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + cartId));
 
 		if (cart == null || cart.getItems().isEmpty()) {
 			throw new RuntimeException("Cart is empty or not found for user ID: " + cartId);

@@ -72,8 +72,8 @@ public class CartService {
 		Cart cart = findById(dtoNewCartItem.cartId());
 
 		// procurar o produto
-		 Product product = productService.getProductById(dtoNewCartItem.productId())
-	                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + dtoNewCartItem.productId()));
+		Product product = productService.getProductById(dtoNewCartItem.productId()).orElseThrow(
+				() -> new ResourceNotFoundException("Product not found with ID: " + dtoNewCartItem.productId()));
 
 		// chamar metodo para criar um itemCart createSaleItem2
 		CartItem cartItem = cartItemService.createCartItem2(product, cart, dtoNewCartItem.quantity());
@@ -85,11 +85,20 @@ public class CartService {
 	}
 
 	public void removeItemFromCart(Integer cartItemId) {
+
+		CartItem cartItem = cartItemService.getCartItemById(cartItemId)
+				.orElseThrow(() -> new ResourceNotFoundException("CartItem not found with ID: " + cartItemId));
+
+		Cart cart = getCartById(cartItem.getCart().getId()).orElseThrow(
+				() -> new ResourceNotFoundException("Cart not found with ID: " + cartItem.getCart().getId()));
+
 		cartItemService.deleteCartItem(cartItemId);
+		cartRepository.save(cart);
 	}
 
 	public void finalizeCart(Integer cartId) {
-		Cart cart = getActiveCart(cartId);
+		Cart cart = getCartById(cartId)
+		.orElseThrow(() -> new ResourceNotFoundException("Cart not found with ID: " + cartId));
 		if (cart != null) {
 			cart.setStatus(Cart.CartStatus.FINALIZED);
 			cartRepository.save(cart);

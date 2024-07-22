@@ -29,7 +29,7 @@ public class Payment {
     @JoinColumn(name = "sale_id", nullable = false)
     private Sale sale;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private double amount;
     
     @CreationTimestamp

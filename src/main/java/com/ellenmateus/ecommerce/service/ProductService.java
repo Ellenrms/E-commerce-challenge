@@ -96,12 +96,18 @@ public class ProductService {
 	
 
 	@Operation(summary = "Update an existing product")
-	@CacheEvict(value = "products", allEntries = true)
-	public Product updateProduct(Integer id, DTOProduct dtoProduct) {
-		Product product = productRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
-		product = convertToEntity(dtoProduct);
-		return productRepository.save(product);
-		
-	}
+	 @CacheEvict(value = "products", allEntries = true)
+	 public Product updateProduct(Integer id, DTOProduct dtoProduct) {
+	  Product product = productRepository.findById(id)
+	    .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + id));
+	  
+	  product.setName(dtoProduct.getName());
+	  product.setDescription(dtoProduct.getDescription());
+	  product.setPrice(dtoProduct.getPrice());
+	  product.setActive(dtoProduct.isActive());
+	  product.setStock(dtoProduct.getStock());
+	    
+	  return productRepository.save(product);
+
+	 }
 }

@@ -39,7 +39,7 @@ public class Sale {
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleItem> items = new ArrayList<>();
     
-    @NotNull(message = "Total amount is mandatory")
+    
     private Double totalAmount;
     
     

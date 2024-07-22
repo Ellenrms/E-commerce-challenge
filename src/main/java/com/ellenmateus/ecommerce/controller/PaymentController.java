@@ -24,41 +24,41 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Payments", description = "Endpoints for managing payments")
 public class PaymentController {
 
-    @Autowired
-    private PaymentService paymentService;
+	@Autowired
+	private PaymentService paymentService;
 
-    @GetMapping
-    @Operation(summary = "Get all payments")
-    public List<Payment> getAllPayments() {
-        return paymentService.getAllPayments();
-    }
+	@GetMapping
+	@Operation(summary = "Get a payment")
+	public List<Payment> getAllPayments() {
+		return paymentService.getAllPayments();
+	}
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get a payment by ID")
-    public ResponseEntity<Payment> getPaymentById(@PathVariable Integer id) {
-        Optional<Payment> payment = paymentService.getPaymentById(id);
-        if (payment.isPresent()) {
-            return ResponseEntity.ok(payment.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@GetMapping("/{id}")
+	@Operation(summary = "Get a payment by ID")
+	public ResponseEntity<Payment> getPaymentById(@PathVariable Integer id) {
+		Optional<Payment> payment = paymentService.getPaymentById(id);
+		if (payment.isPresent()) {
+			return ResponseEntity.ok(payment.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-    @PostMapping
-    @Operation(summary = "Create a new payment")
-    public Payment createPayment(@RequestBody Payment payment) {
-        return paymentService.createPayment(payment);
-    }
+	@PostMapping
+	@Operation(summary = "Create a new payment")
+	public Payment createPayment(@RequestBody Payment payment) {
+		return paymentService.createPayment(payment);
+	}
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a payment by ID")
-    public ResponseEntity<Void> deletePayment(@PathVariable Integer id) {
-        Optional<Payment> payment = paymentService.getPaymentById(id);
-        if (payment.isPresent()) {
-            paymentService.deletePayment(id);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@DeleteMapping("/{id}")
+	@Operation(summary = "Delete a payment by ID")
+	public ResponseEntity<Void> deletePayment(@PathVariable Integer id) {
+		Optional<Payment> payment = paymentService.getPaymentById(id);
+		if (payment.isPresent()) {
+			paymentService.deletePayment(id);
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 }

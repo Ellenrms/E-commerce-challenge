@@ -66,10 +66,10 @@ public class User implements UserDetails {
 	@Override
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if (this.role == "ADMIN") {
-			return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER"));
+		if (this.role == "admin") {
+			return List.of(new SimpleGrantedAuthority("admin"), new SimpleGrantedAuthority("user"));
 		} else {
-			return List.of(new SimpleGrantedAuthority(role));
+			return List.of(new SimpleGrantedAuthority("user"));
 		}
 	}
 
@@ -100,5 +100,9 @@ public class User implements UserDetails {
 	@Override
 	public String getUsername() {
 		return name;
+	}
+	
+	public String getRole() {
+		return role;
 	}
 }
